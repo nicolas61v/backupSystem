@@ -1,34 +1,37 @@
 # 🔧 Sistema de Backup Avanzado con OpenMP - Kali Linux
 
-¡Hola profe! Este es el sistema de backup avanzado desarrollado específicamente para **Kali Linux**, basándome en mi código anterior de compresión RLE y encriptación. Ahora funciona con **carpetas completas** y usa **OpenMP** para paralelización como pedía en el enunciado.
+¡Hola profe! Este es el sistema de backup avanzado desarrollado específicamente para **Kali Linux** por nuestro equipo, basándonos en nuestro código anterior de compresión RLE y encriptación. Ahora funciona con **carpetas completas** y usa **OpenMP** para paralelización como pedía en el enunciado.
 
-## ✨ ¿Qué hace este sistema?
+## ✨ ¿Qué hace nuestro sistema?
 
 - **🗂️ Procesa carpetas completas**: Escanea recursivamente todas las subcarpetas
 - **⚡ Paralelización con OpenMP**: Usa múltiples hilos para procesar archivos simultáneamente
 - **🗜️ Compresión GZIP**: Cada archivo se comprime individualmente usando zlib
-- **🔐 Encriptación opcional**: XOR encryption (mejorado de mi código anterior)
+- **🔐 Encriptación opcional**: XOR encryption (mejorado de nuestro código anterior)
 - **📊 Progreso en tiempo real**: Barra de progreso que muestra el estado
 - **📁 Preserva estructura**: Mantiene la jerarquía de carpetas en el backup
 - **🐉 Optimizado para Kali**: Aprovecha las herramientas ya instaladas en Kali Linux
+- **📦 Archivo único**: Crea un solo archivo .tar.gz con restauración completa
 
-## 🔥 Mejoras respecto al código original
+## 🔥 Mejoras respecto a nuestro código original
 
-### Del código RLE anterior:
-- ✅ Mantuve las llamadas al sistema (open, read, write, close)
-- ✅ Agregué compresión GZIP (más eficiente que RLE)
+### De nuestro código RLE anterior:
+- ✅ Mantuvimos las llamadas al sistema (open, read, write, close)
+- ✅ Agregamos compresión GZIP (más eficiente que RLE)
 - ✅ Ahora funciona con carpetas, no solo archivos individuales
 
-### Del código de encriptación anterior:
-- ✅ Mantuve la encriptación XOR simple pero efectiva
+### De nuestro código de encriptación anterior:
+- ✅ Mantuvimos la encriptación XOR simple pero efectiva
 - ✅ Ahora la encriptación se aplica **antes** de la compresión
-- ✅ Paralelicé la encriptación con OpenMP
+- ✅ Paralelizamos la encriptación con OpenMP
 
-### Nuevas características:
+### Nuevas características desarrolladas:
 - 🚀 **OpenMP**: Procesa múltiples archivos en paralelo
 - 📂 **Escaneo recursivo**: Encuentra todos los archivos automáticamente  
 - 🎯 **Mejor interfaz**: CLI más intuitiva y informativa
 - 📈 **Optimización**: Buffer más grandes y mejor manejo de memoria
+- 📦 **Backup único**: Un solo archivo .tar.gz en lugar de múltiples archivos
+- 🔄 **Restauración completa**: Funcionalidad para restaurar backups completos
 
 ## 🛠️ Requisitos e Instalación para Kali Linux
 
@@ -67,9 +70,9 @@ make
 make info
 ```
 
-## 🚀 Uso del Sistema
+## 🚀 Uso de nuestro sistema
 
-### Comandos básicos:
+### Comandos básicos que desarrollamos:
 
 ```bash
 # Mostrar ayuda
@@ -78,17 +81,23 @@ make info
 # Escanear una carpeta (solo ver qué hay)
 ./backup -s /ruta/a/mi/carpeta
 
-# Crear backup simple
+# Crear backup único
 ./backup -b mi_backup /ruta/a/mi/carpeta
 
 # Crear backup con encriptación
 ./backup -e -b backup_seguro /ruta/a/mi/carpeta
 
+# Restaurar backup
+./backup -r mi_backup.tar.gz
+
+# Restaurar backup encriptado
+./backup -e -r backup_seguro.tar.gz
+
 # Especificar directorio de salida
 ./backup -o /disco/externo -b backup_importante /home/user/documentos
 ```
 
-### Ejemplos específicos para Kali Linux:
+### Ejemplos específicos para Kali Linux que recomendamos:
 
 ```bash
 # Backup de herramientas personalizadas
@@ -107,7 +116,7 @@ make info
 ./backup -s /etc/postgresql
 ```
 
-### Casos de uso típicos en Kali:
+### Casos de uso típicos en Kali que manejamos:
 
 ```bash
 # Backup de proyecto de pentesting completo
@@ -118,27 +127,62 @@ make info
 
 # Backup rápido de escritorio antes de cambios
 ./backup -b desktop_backup ~/Desktop
+
+# Backup con restauración en carpeta específica
+./backup -b mi_backup ~/Documents
+./backup -r mi_backup.tar.gz carpeta_restaurada
 ```
 
-## 🧪 Pruebas y Ejemplos
+## 🧪 Pruebas y Ejemplos desarrollados por nuestro equipo
 
-El Makefile incluye varias pruebas automáticas:
+El Makefile que creamos incluye varias pruebas automáticas:
 
 ```bash
-# Ejecutar todas las pruebas básicas
+# Ejecutar todas nuestras pruebas básicas
 make test
 
 # Ejemplo con carpeta personal
 make example-home
 
-# Ejemplo con encriptación
+# Ejemplo con encriptación que desarrollamos
 make example-encrypted
 
-# Verificar que OpenMP funcione
+# Verificar que OpenMP funcione correctamente
 make test-openmp
+
+# Ejemplos específicos para Kali Linux
+make example-kali-tools
+make example-kali-desktop
+make example-kali-encrypted
 ```
 
-## 📊 Cómo funciona internamente
+### Secuencia de pruebas que recomendamos:
+
+```bash
+# 1. Verificar instalación
+make install-deps && make
+
+# 2. Probar escaneo básico
+./backup -s ../encriptacionParcial
+
+# 3. Crear primer backup
+./backup -b test_backup ../encriptacionParcial
+
+# 4. Verificar archivo creado
+ls -la test_backup.tar.gz
+
+# 5. Restaurar backup
+./backup -r test_backup.tar.gz
+
+# 6. Verificar restauración
+ls -la restored_test_backup/
+
+# 7. Probar con encriptación
+./backup -e -b encrypted_test ../encriptacionParcial
+./backup -e -r encrypted_test.tar.gz
+```
+
+## 📊 Cómo funciona internamente nuestro sistema
 
 ### 1. **Escaneo de carpetas**
 - Usa `opendir()` y `readdir()` para recorrer directorios
@@ -166,18 +210,22 @@ for (int i = 0; i < totalFiles; i++) {
 - **Compresión**: GZIP usando zlib
 - **Escritura**: Resultado final usando `write()`
 
-### 4. **Estructura del backup**
+### 4. **Estructura del backup que creamos**
 ```
-mi_backup_backup/
-├── backup_index.txt          # Índice con metadatos
-├── carpeta1/
-│   ├── archivo1.txt.gz      # Archivo comprimido
-│   └── archivo2.doc.gz
-└── subcarpeta/
-    └── otro_archivo.pdf.gz
+mi_backup.tar.gz  ← Archivo único comprimido
 ```
 
-## ⚡ Rendimiento optimizado para Kali Linux
+**Al restaurar:**
+```
+restored_mi_backup/
+├── carpeta1/
+│   ├── archivo1.txt      # Archivo restaurado
+│   └── archivo2.doc
+└── subcarpeta/
+    └── otro_archivo.pdf
+```
+
+## ⚡ Rendimiento optimizado para Kali Linux por nuestro equipo
 
 ### Configuración de hilos OpenMP:
 ```bash
@@ -194,9 +242,9 @@ export OMP_SCHEDULE=dynamic
 ./backup -e -b backup_rapido /home/kali/Desktop
 ```
 
-### Optimizaciones específicas para Kali:
+### Optimizaciones específicas que implementamos para Kali:
 - **SSD**: Si tienes SSD, el paralelismo será mucho más efectivo
-- **RAM**: El sistema usa buffers de 8KB, ideal para sistemas con 4GB+ RAM
+- **RAM**: Nuestro sistema usa buffers de 8KB, ideal para sistemas con 4GB+ RAM
 - **CPU**: Aprovecha todos los cores disponibles automáticamente
 - **Balanceo**: Schedule dinámico optimiza la carga de trabajo
 
@@ -208,6 +256,40 @@ htop &
 
 # Ver estadísticas detalladas
 time ./backup -b benchmark /ruta/grande
+```
+
+## 🔐 Aspectos de Seguridad implementados
+
+### Encriptación XOR que desarrollamos:
+- **Clave fija**: 0xAE (se puede modificar en el constructor)
+- **Aplicación**: Antes de la compresión para mayor seguridad
+- **Reversible**: La misma operación encripta y desencripta
+
+⚠️ **Nota del equipo**: Como mencionamos en nuestro código anterior, XOR no es la encriptación más segura del mundo, pero cumple con los requisitos del proyecto y demuestra el uso correcto de las llamadas al sistema.
+
+## 📈 Estadísticas y Resultados de nuestro sistema
+
+Nuestro sistema muestra:
+- Número de archivos encontrados
+- Tamaño total a procesar
+- Progreso en tiempo real con barra visual
+- Tiempo de procesamiento
+- Ubicación final del backup
+- Tamaño del archivo final creado
+
+## 🛠️ Personalización del sistema
+
+### Modificar la clave de encriptación:
+```cpp
+// En main.cpp, cambiar:
+BackupSystem backupSystem(encryptEnabled, 0x42); // Nueva clave personalizada
+```
+
+### Ajustar paralelismo:
+```bash
+# Exportar número de hilos antes de ejecutar
+export OMP_NUM_THREADS=4
+./backup -b mi_backup /mi/carpeta
 ```
 
 ## 🔐 Aspectos de Seguridad
@@ -253,9 +335,9 @@ export OMP_NUM_THREADS=4
 ✅ **Manejo de errores**: Validación y mensajes informativos  
 ✅ **Interfaz intuitiva**: CLI clara con múltiples opciones  
 
-## 🛠️ Troubleshooting en Kali Linux
+## 🛠️ Troubleshooting desarrollado por nuestro equipo
 
-### Problemas comunes y soluciones:
+### Problemas comunes y soluciones que identificamos:
 
 **Error: "No se encuentra zlib"**
 ```bash
@@ -278,13 +360,24 @@ mkdir -p ~/backups
 ./backup -o ~/backups -b mi_backup /ruta/origen
 ```
 
+**Backup se crea pero restauración falla**
+```bash
+# Verificar contenido del backup
+tar -tzf mi_backup.tar.gz
+
+# Probar extracción manual
+mkdir test_restore && cd test_restore
+tar -xzf ../mi_backup.tar.gz
+ls -la
+```
+
 **Verificar instalación completa**
 ```bash
-# Comando todo-en-uno para verificar
+# Comando todo-en-uno que desarrollamos para verificar
 make info && make test-openmp && echo "✅ Todo listo para usar"
 ```
 
-### Comandos útiles en Kali:
+### Comandos útiles en Kali que recomendamos:
 
 ```bash
 # Ver espacio disponible antes del backup
@@ -294,7 +387,27 @@ df -h
 watch -n 1 'ls -la *_backup'
 
 # Verificar integridad después del backup
-find *_backup -name "*.gz" | head -5 | xargs -I {} gunzip -t {}
+find . -name "*.tar.gz" | head -5 | xargs -I {} tar -tzf {}
+
+# Ver uso de CPU durante backup
+htop &
+./backup -e -b test /home/kali/Desktop
+
+# Limpiar archivos de prueba
+make clean-all
+```
+
+### Debug avanzado que implementamos:
+
+```bash
+# Ver exactamente qué hace el sistema
+strace -e trace=openat,read,write ./backup -s ~/Desktop
+
+# Monitorear uso de memoria
+valgrind --tool=memcheck ./backup -b test ~/Desktop
+
+# Ver threads de OpenMP en acción
+ps -eLf | grep backup
 ```
 
 ## 🚀 Instalación Permanente
@@ -322,4 +435,4 @@ Si tuviera más tiempo, podría agregar:
 
 ---
 
-**¡Gracias profe por revisar el proyecto!** Este sistema combina lo mejor de mis códigos anteriores con las nuevas tecnologías pedidas (OpenMP + GZIP) para crear una solución robusta y eficiente. 🎉"# backupSystem" 
+**¡Gracias profe por revisar el proyecto!** Este sistema combina lo mejor de mis códigos anteriores con las nuevas tecnologías pedidas (OpenMP + GZIP) para crear una solución robusta y eficiente. 🎉
