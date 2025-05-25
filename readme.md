@@ -17,7 +17,7 @@
 
 ### De nuestro código RLE anterior:
 - ✅ Mantuvimos las llamadas al sistema (open, read, write, close)
-- ✅ Agregamos compresión GZIP (más eficiente que RLE)
+- ✅ Agregamos compresión TAR.GZ (más eficiente que RLE)
 - ✅ Ahora funciona con carpetas, no solo archivos individuales
 
 ### De nuestro código de encriptación anterior:
