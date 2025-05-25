@@ -33,6 +33,7 @@ private:
     void compressFile(const std::string& inputFile, const std::string& outputFile);
     void copyAndProcessFile(const std::string& inputFile, const std::string& outputFile);
     void decryptDirectory(const std::string& dirPath);
+    void decryptSingleFile(const std::string& filePath);
     void encryptBuffer(unsigned char* buffer, size_t size);
     bool isDirectory(const std::string& path);
     void createDirectoryStructure(const std::string& path);

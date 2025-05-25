@@ -263,6 +263,10 @@ void BackupSystem::restoreBackup(const std::string& backupFile, const std::strin
     // Crear directorio de restauración
     createDirectoryStructure(restoreDir);
     
+    // Limpiar archivos temporales anteriores si existen
+    std::string cleanCommand = "find \"" + restoreDir + "\" -name '*.tmp' -delete 2>/dev/null || true";
+    system(cleanCommand.c_str());
+    
     // Obtener ruta absoluta del archivo backup
     char* absolutePath = realpath(backupFile.c_str(), nullptr);
     if (absolutePath == nullptr) {
@@ -299,6 +303,11 @@ void BackupSystem::restoreBackup(const std::string& backupFile, const std::strin
         if (encryptEnabled) {
             std::cout << "\n🔓 Desencriptando archivos..." << std::endl;
             decryptDirectory(restoreDir);
+            
+            // Limpiar archivos temporales corruptos si existen
+            std::cout << "🧹 Limpiando archivos temporales..." << std::endl;
+            std::string cleanCommand = "find \"" + restoreDir + "\" -name '*.tmp' -delete";
+            system(cleanCommand.c_str());
         }
         
         std::cout << "\n=== RESTAURACIÓN COMPLETADA ===" << std::endl;
@@ -322,15 +331,82 @@ void BackupSystem::restoreBackup(const std::string& backupFile, const std::strin
 }
 
 void BackupSystem::decryptDirectory(const std::string& dirPath) {
-    // Implementación simple de desencriptación recursiva
-    std::string decryptCommand = "find \"" + dirPath + "\" -type f -exec sh -c '"
-                                "for file; do "
-                                "cp \"$file\" \"$file.tmp\" && "
-                                "cat \"$file.tmp\" | tr '\\0-\\377' '\\256-\\377\\0-\\255' > \"$file\" && "
-                                "rm \"$file.tmp\"; "
-                                "done' _ {} +";
+    std::cout << "🔓 Desencriptando archivos en: " << dirPath << std::endl;
     
-    system(decryptCommand.c_str());
+    // Obtener lista de todos los archivos
+    std::vector<std::string> filesToDecrypt;
+    std::string findCommand = "find \"" + dirPath + "\" -type f";
+    
+    FILE* pipe = popen(findCommand.c_str(), "r");
+    if (pipe) {
+        char buffer[1024];
+        while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+            std::string filePath = buffer;
+            // Remover newline
+            filePath.erase(filePath.find_last_not_of(" \n\r\t") + 1);
+            filesToDecrypt.push_back(filePath);
+        }
+        pclose(pipe);
+    }
+    
+    std::cout << "Archivos a desencriptar: " << filesToDecrypt.size() << std::endl;
+    
+    // Desencriptar archivos en paralelo usando OpenMP
+    int totalFiles = filesToDecrypt.size();
+    int processedFiles = 0;
+    
+    #pragma omp parallel for schedule(dynamic) shared(processedFiles)
+    for (int i = 0; i < totalFiles; i++) {
+        decryptSingleFile(filesToDecrypt[i]);
+        
+        #pragma omp critical
+        {
+            processedFiles++;
+            if (processedFiles % 10 == 0 || processedFiles == totalFiles) {
+                std::cout << "Desencriptados: " << processedFiles << "/" << totalFiles << std::endl;
+            }
+        }
+    }
+    
+    std::cout << "✅ Desencriptación completada" << std::endl;
+}
+
+void BackupSystem::decryptSingleFile(const std::string& filePath) {
+    // Abrir archivo original
+    int fdIn = open(filePath.c_str(), O_RDONLY);
+    if (fdIn == -1) {
+        return; // Skip si no se puede abrir
+    }
+    
+    // Crear archivo temporal
+    std::string tempFile = filePath + ".decrypt_tmp";
+    int fdOut = open(tempFile.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fdOut == -1) {
+        close(fdIn);
+        return;
+    }
+    
+    // Desencriptar usando XOR (la misma operación que encriptar)
+    const size_t BUFFER_SIZE = 8192;
+    unsigned char buffer[BUFFER_SIZE];
+    ssize_t bytesRead;
+    
+    while ((bytesRead = read(fdIn, buffer, BUFFER_SIZE)) > 0) {
+        // Aplicar XOR para desencriptar (misma operación que encriptar)
+        encryptBuffer(buffer, bytesRead);
+        
+        write(fdOut, buffer, bytesRead);
+    }
+    
+    close(fdIn);
+    close(fdOut);
+    
+    // Reemplazar archivo original con el desencriptado
+    if (rename(tempFile.c_str(), filePath.c_str()) != 0) {
+        // Si falla rename, intentar con comandos del sistema
+        std::string moveCommand = "mv \"" + tempFile + "\" \"" + filePath + "\"";
+        system(moveCommand.c_str());
+    }
 }
 
 void BackupSystem::showProgress(int current, int total, const std::string& currentFile) {

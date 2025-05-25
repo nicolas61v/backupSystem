@@ -322,4 +322,4 @@ Si tuviera más tiempo, podría agregar:
 
 ---
 
-**¡Gracias profe por revisar el proyecto!** Este sistema combina lo mejor de mis códigos anteriores con las nuevas tecnologías pedidas (OpenMP + GZIP) para crear una solución robusta y eficiente. 🎉"# backupSystem" 
+**¡Gracias profe por revisar el proyecto!** Este sistema combina lo mejor de mis códigos anteriores con las nuevas tecnologías pedidas (OpenMP + GZIP) para crear una solución robusta y eficiente. 🎉
