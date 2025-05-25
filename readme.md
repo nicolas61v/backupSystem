@@ -6,7 +6,7 @@
 
 - **🗂️ Procesa carpetas completas**: Escanea recursivamente todas las subcarpetas
 - **⚡ Paralelización con OpenMP**: Usa múltiples hilos para procesar archivos simultáneamente
-- **🗜️ Compresión GZIP**: Cada archivo se comprime individualmente usando zlib
+- **🗜️ Compresión TAR.GZ**: Cada archivo se comprime individualmente usando zlib
 - **🔐 Encriptación opcional**: XOR encryption (mejorado de nuestro código anterior)
 - **📊 Progreso en tiempo real**: Barra de progreso que muestra el estado
 - **📁 Preserva estructura**: Mantiene la jerarquía de carpetas en el backup
